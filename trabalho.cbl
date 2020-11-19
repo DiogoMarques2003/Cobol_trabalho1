@@ -103,6 +103,8 @@
        77  opcao pic 99 value zero.
       *variavel para terminar o programa
        77  termina pic 99 value zero.
+      *variavel para cancelar a verificação de dados
+       77  termina_verific pic 99 value zero.
       *variavel de quantos produtos a fatura vai ter
        77  quant_produtos pic 99 value zero.
       *Variavel do indice dos clientes
@@ -132,7 +134,7 @@
            display "6. Salvar dados nos ficheiros".
            display "7. Carregar dados dos ficheiros".
            display "0. Sair".
-           display "opcao: ".
+           display "Opcao: ".
            accept opcao.
            display "-----------------".
            evaluate true
@@ -153,7 +155,8 @@
                when opcao = 0
                    move 1 to termina
                when other
-                   display "Opcao invalida"
+                   display "Opcao invalida."
+                   display "Volte a introduzir uma opcao: "
                    display "-----------------"
            end-evaluate.
 
@@ -170,23 +173,24 @@
            evaluate true
                when opcao = 1
                    if indice_cliente = 10 then
-                       display "Limite atingido pela tabela"
+                       display "Limite atingido pela tabela."
                    else
                        perform introduzir-c
                when opcao = 2
                    if indice_produtos = 10 then
-                       display "Limite atingido pela tabela"
+                       display "Limite atingido pela tabela."
                    else
                        perform introduzir-p
                when opcao = 3
                    if indice_faturas = 10 then
-                       display "Limite atingido pela tabela"
+                       display "Limite atingido pela tabela."
                    else
                        perform introduzir-f
                 when opcao = 0
                    perform menu
                when other
-                   display "opcao invalida"
+                   display "Opcao invalida."
+                   display "Volte a introduzir uma opcao: "
            end-evaluate.
 
        menu-consultar.
@@ -202,7 +206,7 @@
            evaluate true
            when opcao = 1
                 if indice_cliente = 0 then
-                     display "A tabela cliente esta vazia"
+                     display "A tabela cliente esta vazia."
                 else
                     move 0 to apagados
                     perform varying indice from 1 by 1 until indice >
@@ -214,10 +218,10 @@
                     if apagados > 0
                        perform consultar-c
                     else
-                       display "A tabela cliente esta vazia"
+                       display "A tabela cliente esta vazia."
                 when opcao = 2
                     if indice_produtos = 0
-                        display "A tabela produtos esta vazia"
+                        display "A tabela produtos esta vazia."
                     else
                      move 0 to apagados
                      perform varying indice from 1 by 1 until indice >
@@ -229,10 +233,10 @@
                      if apagados > 0
                         perform consultar-p
                      else
-                       display "A tabela produtos esta vazia"
+                       display "A tabela produtos esta vazia."
                 when opcao = 3
                     if indice_faturas = 0
-                       display "A tabela faturas esta vazia"
+                       display "A tabela faturas esta vazia."
                     else
                     move 0 to apagados
                      perform varying indice from 1 by 1 until indice >
@@ -244,7 +248,7 @@
                      if apagados > 0
                         perform consultar-f
                      else
-                       display "A tabela faturas esta vazia"
+                       display "A tabela faturas esta vazia."
                 when opcao = 0
                    perform menu
                when other
@@ -264,17 +268,17 @@
            evaluate true
            when opcao = 1
                 if indice_cliente = 0 then
-                     display "A tabela cliente esta vazia"
+                     display "A tabela cliente esta vazia."
                 else
                     perform alterar-c
                 when opcao = 2
                     if indice_produtos = 0
-                        display "A tabela produtos esta vazia"
+                        display "A tabela produtos esta vazia."
                     else
                         perform alterar-p
                 when opcao = 3
                     if indice_faturas = 0
-                       display "A tabela faturas esta vazia"
+                       display "A tabela faturas esta vazia."
                     else
                         perform alterar-f
                 when opcao = 0
@@ -328,7 +332,7 @@
            evaluate true
            when opcao = 1
                 if indice_cliente = 0 then
-                     display "A tabela cliente esta vazia"
+                     display "A tabela cliente esta vazia."
                 else
                     move 0 to apagados
                     perform varying indice from 1 by 1 until indice >
@@ -371,8 +375,9 @@
                            display "Nao existe nenhuma fatura apagada."
                 when opcao = 0
                    perform menu
-               when other
-                   display "opcao invalida"
+                when other
+                   display "Opcao invalida."
+                   display "Volte a introduzir uma opcao: "
            end-evaluate.
 
        introduzir-c.
@@ -396,7 +401,7 @@
                           opcao_continuar = "N" or
                           opcao_continuar = "n" )
               display "ERRO - opcao errada"
-              display "Volta introduzir a opcao"
+              display "Volta introduzir a opcao: "
               accept opcao_continuar
            end-perform.
            if sim then
@@ -426,14 +431,14 @@
            display "Qual e o stock do produto?: ".
            accept stock-produto(indice_produtos).
            move space to descricao-produto(indice_produtos).
-           display "Queres introduzir mais algum produto?(S/N)".
+           display "Queres introduzir mais algum produto?(S/N): ".
            accept opcao_continuar.
            perform until (opcao_continuar = "S" or
                           opcao_continuar = "s" or
                           opcao_continuar = "N" or
                           opcao_continuar = "n" )
-              display "ERRO - opcao errada"
-              display "Volta introduzir a opcao"
+              display "ERRO - opcao errada."
+              display "Volta introduzir a opcao: "
               accept opcao_continuar
            end-perform.
            if sim then
@@ -451,7 +456,7 @@
            perform until (dia-fatura(indice_faturas) > 0 and 
            dia-fatura(indice_faturas) < 32)
               display "Introduziste um dia invalido"
-              display "envia 0 para cancelar"
+              display "Envia 0 para cancelar"
               display "Qual e o dia da fatura?: "
               accept dia-fatura(indice_faturas)
               if dia-fatura(indice_faturas) equal to 0
@@ -462,8 +467,8 @@
            accept mes-fatura(indice_faturas).
            perform until (mes-fatura(indice_faturas) > 0 and 
            mes-fatura(indice_faturas) < 13)
-              display "O mes que introduziste nao existe"
-              display "envia 0 para cancelar"
+              display "O mes que introduziste nao existe."
+              display "Envia 0 para cancelar."
               display "Qual e o mes da fatura?: "
               accept mes-fatura(indice_faturas)
               if mes-fatura(indice_faturas) equal to 0
@@ -474,8 +479,8 @@
            accept ano-fatura(indice_faturas).
            perform until (ano-fatura(indice_faturas) > 2009 and 
            ano-fatura(indice_faturas) < 2031)
-              display "O ano que introduziste nao existe"
-              display "envia 0 para cancelar"
+              display "O ano que introduziste nao existe."
+              display "Envia 0 para cancelar."
               display "Qual e o ano da fatura?: "
               accept ano-fatura(indice_faturas)
               if ano-fatura(indice_faturas) equal to 0
@@ -487,8 +492,8 @@
            perform until (id-cliente-fatura(indice_faturas) <=
            indice_cliente and descricao-cliente(id-cliente-fatura
            (indice_faturas)) not equal to 'apagado')
-              display "Este cliente nao existe"
-              display "envia 0 para cancelar"
+              display "Este cliente nao existe."
+              display "Envia 0 para cancelar."
               display "Qual e o id do cliente da fatura?: "
               accept id-cliente-fatura(indice_faturas)
               if id-cliente-fatura(indice_faturas) equal to 0
@@ -499,9 +504,9 @@
            accept quant_produtos.
            perform until (quant_produtos >= 1 and quant_produtos <= 5)
               display "Erro - Quantidade de produtos invalida(1-5)."
-              display "Envia 0 para cancelar a introducao da fatura"
+              display "Envia 0 para cancelar a introducao da fatura."
               display "Volta a introduzir a quantidade de produtos que"
-    -        " fatura vai ter:"
+    -        " a fatura vai ter: "
               accept quant_produtos
               if quant_produtos equal to 0
                 compute indice_faturas = indice_faturas - 1
@@ -514,24 +519,24 @@
               perform until (id-produtos-fatura(indice_faturas,x) <=
                 indice_produtos and descricao-produto(id-produtos-fatura
                  (indice_faturas,x)) not equal to 'apagado')
-                 display "Esse produto nao existe ou foi apagado"
-                 display "Para cancelar envia 0"
-                 display "Qual e o id do produto?:"
+                 display "Esse produto nao existe ou foi apagado."
+                 display "Para cancelar envia 0."
+                 display "Qual e o id do produto?: "
                  accept id-produtos-fatura(indice_faturas,x)
                  if id-produtos-fatura(indice_faturas,x) equal to 0
                     compute indice_faturas = indice_faturas - 1
                     perform menu
               end-perform
-              display "Qual e a quantidade do produto): "
+              display "Qual e a quantidade do produto: "
               accept quantidade-produto-fatura(indice_faturas,x)
               perform until (quantidade-produto-fatura(indice_faturas,x)
                             < 0 or stock-produto(id-produtos-fatura
                             (indice_faturas,x)) >=
                             quantidade-produto-fatura(indice_faturas,x))
                  display "Erro - Quantidade de produtos invalida."
-                 display "Envia 0 para cancelar a introducao da fatura"
+                 display "Envia 0 para cancelar a introducao da fatura."
                  display "Volta a introduzir a quantidade de produtos "
-                 "que fatura vai ter:"
+                 "que a fatura vai ter: "
                  accept quantidade-produto-fatura(indice_faturas,x)
                  if quantidade-produto-fatura(indice_faturas,x)
                     equal to 0
@@ -544,14 +549,14 @@
               (indice_faturas,x)
            end-perform.
            move space to descricao-produto(indice_produtos).
-            display "Queres introduzir mais alguma fatura?(S/N)".
+            display "Queres introduzir mais alguma fatura?(S/N): ".
            accept opcao_continuar.
            perform until (opcao_continuar = "S" or
                           opcao_continuar = "s" or
                           opcao_continuar = "N" or
                           opcao_continuar = "n" )
-              display "ERRO - opcao errada"
-              display "Volta introduzir a opcao"
+              display "ERRO - opcao errada."
+              display "Volta introduzir a opcao."
               accept opcao_continuar
            end-perform.
            if sim then
@@ -612,13 +617,13 @@
 
        alterar-c.
            display "-----------------".
-           display "Qual e o id do cliente que quer alterar os dados".
+           display "Qual e o id do cliente que quer alterar os dados?:".
            accept procurar.
            perform until (procurar <= indice_cliente and
                 descricao-cliente(procurar) not equal to "apagado")
-              display "Erro - esse cliente nao existe ou foi apagado"
-              display "Se quiseres cancelar escreve 0"
-              display "volta a introduzir outro id de cliente: "
+              display "Erro - esse cliente nao existe ou foi apagado."
+              display "Se quiseres cancelar escreve 0."
+              display "Volta a introduzir outro id de cliente: "
               accept procurar
               if procurar equal to 0
                  perform menu
@@ -640,9 +645,9 @@
            accept procurar.
            perform until (procurar <= indice_produtos and
                 descricao-produto(procurar) not equal to "apagado")
-              display "Erro - esse produto nao existe ou foi apagado"
-              display "Se quiseres cancelar escreve 0"
-              display "volta a introduzir outro id de produto"
+              display "Erro - esse produto nao existe ou foi apagado."
+              display "Se quiseres cancelar escreve 0."
+              display "Volta a introduzir outro id de produto: "
               accept procurar
               if procurar equal to 0
                  perform menu
@@ -668,13 +673,13 @@
 
        alterar-f.
            display "-----------------".
-           display "Qual e o id da fatura que quer alterar os dados:".
+           display "Qual e o id da fatura que quer alterar os dados?:".
            accept procurar.
            perform until (procurar <= indice_faturas and
                 descricao-fatura(procurar) not equal to "apagado")
-              display "Erro - essa fatura nao existe ou foi apagado"
-              display "Se quiseres cancelar escreve 0"
-              display "volta a introduzir outro id da fatura"
+              display "Erro - essa fatura nao existe ou foi apagado."
+              display "Se quiseres cancelar escreve 0."
+              display "Volta a introduzir outro id da fatura: "
               accept procurar
               if procurar equal to 0
                  perform menu
@@ -697,9 +702,9 @@
            perform until (id-cliente-fatura(procurar) <
            indice_cliente or descricao-cliente(id-cliente-fatura
            (procurar)) not equal to 'apagado')
-              display "Este cliente nao existe"
-              display "envia 0 para cancelar"
-              display "Qual e o cliente da fatura? "
+              display "Este cliente nao existe."
+              display "envia 0 para cancelar."
+              display "Qual e o cliente da fatura?: "
               accept id-cliente-fatura(procurar)
               if id-cliente-fatura(procurar) equal to 0
                 perform menu
@@ -708,9 +713,9 @@
            accept quant_produtos.
            perform until (quant_produtos >= 1 and quant_produtos <= 5)
               display "Erro - Quantidade de produtos invalida(1-5)."
-              display "Envia 0 para cancelar a introducao da fatura"
+              display "Envia 0 para cancelar a introducao da fatura."
               display "Volta a introduzir a quantidade de produtos que"
-    -        " fatura vai ter:"
+    -        " a fatura vai ter:"
               accept quant_produtos
               if quant_produtos equal to 0
                 perform menu
@@ -722,23 +727,23 @@
               perform until (id-produtos-fatura(procurar,x) <
                  indice_produtos or descricao-produto(id-produtos-fatura
                  (procurar,x)) not equal to 'apagado')
-                 display "Esse produto nÃ£o existe ou foi apagado"
-                 display "Para cancelar envia 0"
-                 display "Qual e o id do produto?:"
+                 display "Esse produto nao existe ou foi apagado."
+                 display "Para cancelar envia 0."
+                 display "Qual e o id do produto?: "
                  accept id-produtos-fatura(procurar,x)
                  if id-produtos-fatura(procurar,x) equal to 0
                     perform menu
               end-perform
-              display "Qual e a quantidade do produto): "
+              display "Qual e a quantidade do produto?: "
               accept quantidade-produto-fatura(procurar,x)
               perform until (quantidade-produto-fatura(procurar,x)
                             < 0 or stock-produto(id-produtos-fatura
                             (procurar,x)) >=
                             quantidade-produto-fatura(procurar,x))
                  display "Erro - Quantidade de produtos invalida."
-                 display "Envia 0 para cancelar a introducao da fatura"
+                 display "Envia 0 para cancelar a introducao da fatura."
                  display "Volta a introduzir a quantidade de produtos "
-                 "que fatura vai ter:"
+                 "que a fatura vai ter:"
                  accept quantidade-produto-fatura(procurar,x)
                  if quantidade-produto-fatura(procurar,x)
                     equal to 0
@@ -753,51 +758,51 @@
 
        eliminar-c.
            display "-----------------".
-           display "Qual e o id do cliente que quer apagar".
+           display "Qual e o id do cliente que quer apagar?: ".
            accept procurar.
            perform until (procurar <= indice_cliente and
                 descricao-cliente(procurar) not equal to "apagado")
               display "Erro - esse cliente nao existe ou ja foi "
-              "apagado"
-              display "Se quiseres cancelar escreve 0"
-              display "volta a introduzir outro id de cliente"
+              "apagado."
+              display "Se quiseres cancelar escreve 0."
+              display "Volta a introduzir outro id de cliente."
               accept procurar
               if procurar equal to 0
                  perform menu
               end-if
            END-PERFORM.
            move "apagado" to descricao-cliente(procurar).
-           display "Cliente apagado com sucesso"
+           display "Cliente apagado com sucesso."
            display "-----------------".
 
        eliminar-p.
            display "-----------------".
-           display "Qual e o id do produto que quer apagar os dados".
+           display "Qual e o id do produto que quer apagar os dados?:".
            accept procurar.
            perform until (procurar <= indice_produtos and
                 descricao-produto(procurar) not equal to "apagado")
               display "Erro - esse produto nao existe ou ja foi "
-              "apagado"
-              display "Se quiseres cancelar escreve 0"
-              display "volta a introduzir outro id do produto"
+              "apagado."
+              display "Se quiseres cancelar escreve 0."
+              display "Volta a introduzir outro id do produto."
               accept procurar
               if procurar equal to 0
                  perform menu
               end-if
            END-PERFORM.
            move "apagado" to descricao-produto(procurar).
-           display "Produto apagado com sucesso"
+           display "Produto apagado com sucesso."
            display "-----------------".
 
        eliminar-f.
            display "-----------------".
-           display "Qual e o id da fatura que quer apagar".
+           display "Qual e o id da fatura que quer apagar?:".
            accept procurar.
            perform until (procurar <= indice_faturas and
                 descricao-fatura(procurar) not equal to "apagado")
-              display "Erro - essa fatura nao existe ou ja foi apagado"
-              display "Se quiseres cancelar escreve 0"
-              display "volta a introduzir outro id da fatura"
+              display "Erro - essa fatura nao existe ou ja foi apagado."
+              display "Se quiseres cancelar escreve 0."
+              display "Volta a introduzir outro id da fatura."
               accept procurar
               if procurar equal to 0
                  perform menu
@@ -810,7 +815,7 @@
                 quantidade-produto-fatura(indice,y)
            end-perform.
            move "apagado" to descricao-fatura(procurar)
-           display "Fatura apagada com sucesso"
+           display "Fatura apagada com sucesso."
            display "-----------------".
 
        consultarapagados-c.
@@ -869,52 +874,55 @@
            display "-----------------".
 
        salvar-dados.
-           display "Ao realizar esta opcao os dados contidos nos "
-           "ficheiros serao apagados. Queres mesmo realizar esta opcao?"
-           "(S/N)"
-           accept opcao_continuar
-           perform until (opcao_continuar = "S" or
-                          opcao_continuar = "s" or
-                          opcao_continuar = "N" or
-                          opcao_continuar = "n" )
-              display "ERRO - opcao errada"
-              display "Volta introduzir a opcao"
-              accept opcao_continuar
-           end-perform.
-           if sim then
-              delete arquivo-cliente.
-              delete arquivo-fatura.
-              delete arquivo-produto.
-              delete arquivo-produto-fatura.
-              display "Salvando clientes...".
-              perform salvar-cliente.
-              display "Clientes salvos com sucesso".
-              display "Salvando produtos...".
-              perform salvar-produto.
-              display "Produtos salvos com sucesso".
-              display "salvando faturas...".
-              perform salvar-fatura.
-              display "Faturas salvas com sucesso".
-              display "Todos os dados foram salvos.".
-              display "-----------------".
+           if indice_cliente > 0 and indice_faturas > 0 and 
+              indice_produtos > 0
+               display "Ao realizar esta opcao, os dados contidos nos "
+               "ficheiros serao apagados. Queres mesmo realizar esta "
+               "opcao?(S/N): "
+               accept opcao_continuar
+               perform until (opcao_continuar = "S" or
+                              opcao_continuar = "s" or
+                              opcao_continuar = "N" or
+                              opcao_continuar = "n" )
+                  display "ERRO - opcao errada."
+                  display "Volta introduzir a opcao."
+                  accept opcao_continuar
+               end-perform.
+               if sim then
+                  display "Salvando clientes..."
+                  perform salvar-cliente
+                  display "Clientes salvos com sucesso."
+                  display "Salvando produtos..."
+                  perform salvar-produto
+                  display "Produtos salvos com sucesso."
+                  display "salvando faturas..."
+                  perform salvar-fatura
+                  display "Faturas salvas com sucesso."
+                  display "Todos os dados foram salvos."
+                  display "-----------------"
+           else 
+              display "Nao foi possivel salvar os dados, pois alguma "
+              "das tabelas estao vazias."
+              display "-----------------"
+           end-if.
 
        ler-dados.    
            display "Carregando os clientes...".
            perform ler-clientes.
-           display "Clientes carregados com sucesso".
+           display "Clientes carregados com sucesso.".
            display "Carregando os produtos...".
            perform ler-produtos.
-           display "Produtos carregados com sucesso".
+           display "Produtos carregados com sucesso.".
            display "Carregando a primeira parte das faturas...".
            perform ler-faturas.
            display "Carregando a segunda parte das faturas...".
            perform ler-produtos-faturas.
-           display "Faturas carregadas com sucesso".
-           display "Todos os dados foram carregados com sucesso".
+           display "Faturas carregadas com sucesso.".
+           display "Todos os dados foram carregados com sucesso.".
            display "-----------------".
 
        salvar-cliente.
-           open extend arquivo-cliente.
+           open output arquivo-cliente.
            perform varying indice from 1 by 1 until indice >
                 indice_cliente
                 move id-cliente(indice) to registo-cliente-id
@@ -930,7 +938,7 @@
            close arquivo-cliente.
 
        salvar-produto.
-           open extend arquivo-produto.
+           open output arquivo-produto.
            perform varying indice from 1 by 1 until indice >
                 indice_produtos
                 move id-produto(indice) to registo-produto-id
@@ -944,7 +952,7 @@
            close arquivo-produto.
 
        salvar-fatura.
-           open extend arquivo-fatura.
+           open output arquivo-fatura.
            perform varying indice from 1 by 1 until indice >
                 indice_faturas
                 move id-fatura(indice) to registo-fatura-id
@@ -955,7 +963,7 @@
                 registo-fatura-id-cliente 
                 move n-produtos-fatura(indice) to 
                 registo-fatura-n-produtos
-                open extend arquivo-produto-fatura
+                open output arquivo-produto-fatura
                 perform varying y from 1 by 1 until y >
                 n-produtos-fatura(indice)
                     move id-fatura(indice) to registo-produto-fatura-id
