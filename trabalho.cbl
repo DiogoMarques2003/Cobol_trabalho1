@@ -164,7 +164,7 @@
            display "2 - Produtos"
            display "3 - Faturas"
            display "0 - Cancelar"
-           display "Quer introduzir o que: "
+           display "Quer introduzir o que?: "
            accept opcao
            display "-----------------".
            evaluate true
@@ -196,7 +196,7 @@
            display "2 - Produtos"
            display "3 - Faturas"
            display "0 - Cancelar"
-           display "Quer consultar o que: "
+           display "Quer consultar o que?: "
            accept opcao
            display "-----------------".
            evaluate true
@@ -258,7 +258,7 @@
            display "2 - Produtos"
            display "3 - Faturas"
            display "0 - Cancelar"
-           display "Quer alterar o que: "
+           display "Quer alterar o que?: "
            accept opcao
            display "-----------------".
            evaluate true
@@ -290,7 +290,7 @@
            display "2 - Produtos"
            display "3 - Faturas"
            display "0 - Cancelar"
-           display "Quer eliminar o que: "
+           display "Quer eliminar o que?: "
            accept opcao
            display "-----------------".
            evaluate true
@@ -322,7 +322,7 @@
            display "2 - Produtos"
            display "3 - Faturas"
            display "0 - Cancelar"
-           display "Quer consultar que apagados: "
+           display "Quais dados apagados quer consultar?: "
            accept opcao
            display "-----------------".
            evaluate true
@@ -339,10 +339,10 @@
                     if apagados > 0
                        perform consultarapagados-c
                     else
-                       display "Nao existe nenhum cliente apagado"
+                       display "Nao existe nenhum cliente apagado."
                 when opcao = 2
                     if indice_produtos = 0
-                        display "A tabela produtos esta vazia"
+                        display "A tabela produtos esta vazia."
                     else
                     move 0 to apagados
                     perform varying indice from 1 by 1 until indice >
@@ -353,10 +353,10 @@
                     if apagados > 0
                         perform consultarapagados-p
                     else
-                       display "Nao existe nenhum produto apagado"
+                       display "Nao existe nenhum produto apagado."
                 when opcao = 3
                     if indice_faturas = 0
-                       display "A tabela faturas esta vazia"
+                       display "A tabela faturas esta vazia."
                     else
                        move 0 to apagados
                        perform varying indice from 1 by 1 until indice >
@@ -368,7 +368,7 @@
                        if apagados > 0
                            perform consultarapagados-f
                        else
-                           display "Nao existe nenhuma fatura apgada"
+                           display "Nao existe nenhuma fatura apagada."
                 when opcao = 0
                    perform menu
                when other
@@ -636,7 +636,7 @@
 
        alterar-p.
            display "-----------------".
-           display "Qual e o id do produto que quer alterar os dados".
+           display "Qual e o id do produto que quer alterar os dados: ".
            accept procurar.
            perform until (procurar <= indice_produtos and
                 descricao-produto(procurar) not equal to "apagado")
@@ -668,7 +668,7 @@
 
        alterar-f.
            display "-----------------".
-           display "Qual e o id da fatura que quer alterar os dados".
+           display "Qual e o id da fatura que quer alterar os dados:".
            accept procurar.
            perform until (procurar <= indice_faturas and
                 descricao-fatura(procurar) not equal to "apagado")
