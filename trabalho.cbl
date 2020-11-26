@@ -1,4 +1,4 @@
-      ******************************************************************
+******************************************************************
       * Author: Arianna Cicero NÂº3, Diogo Marques NÂº7
       * Date: Inicio:05/11/2020 Entraga: 19/11/2020
       * Purpose:
@@ -103,8 +103,6 @@
        77  opcao pic 99 value zero.
       *variavel para terminar o programa
        77  termina pic 99 value zero.
-      *variavel para cancelar a verificação de dados
-       77  termina_verific pic 99 value zero.
       *variavel de quantos produtos a fatura vai ter
        77  quant_produtos pic 99 value zero.
       *Variavel do indice dos clientes
@@ -159,7 +157,6 @@
                    display "Volte a introduzir uma opcao: "
                    display "-----------------"
            end-evaluate.
-
        menu-introduzir.
            display "-----------------".
            display "Opcoes de introduzir: "
@@ -185,14 +182,35 @@
                    if indice_faturas = 10 then
                        display "Limite atingido pela tabela."
                    else
-                       perform introduzir-f
+                       move 0 to apagados
+                       perform varying indice from 1 by 1 until indice >
+                       indice_cliente
+                       if descricao-cliente(indice) not equal to
+                       "apagado"
+                       add 1 to apagados
+                    end-perform
+                    if apagados > 0
+                       move 0 to apagados
+                       perform varying indice from 1 by 1 until indice >
+                        indice_produtos
+                        if descricao-produto(indice) not equal to
+                        "apagado"
+                        add 1 to apagados
+                        end-perform
+                        if apagados > 0
+                          perform introduzir-f
+                        else
+                          display "A tabela produtos esta vazia tens de"
+                          " ter pelo menos 1 produto"
+                    else
+                       display "A tabela clientes esta vazia tem de ter"
+                       " pelo menos 1 cliente"
                 when opcao = 0
                    perform menu
                when other
                    display "Opcao invalida."
                    display "Volte a introduzir uma opcao: "
            end-evaluate.
-
        menu-consultar.
            display "-----------------".
            display "Opcoes de consultar: "
@@ -254,7 +272,6 @@
                when other
                    display "opcao invalida"
            end-evaluate.
-
        menu-alterar.
            display "-----------------".
            display "Opcoes de alterar: "
@@ -286,7 +303,6 @@
                when other
                    display "opcao invalida"
            end-evaluate.
-
        menu-eliminar.
            display "-----------------".
            display "Opcoes de eleminar: "
@@ -318,7 +334,6 @@
                when other
                    display "opcao invalida"
            end-evaluate.
-
        menu-consultarapagados.
            display "-----------------".
            display "Opcoes de consultar os apagados: "
@@ -379,7 +394,6 @@
                    display "Opcao invalida."
                    display "Volte a introduzir uma opcao: "
            end-evaluate.
-
        introduzir-c.
            add 1 to indice_cliente.
            move indice_cliente to id-cliente(indice_cliente).
@@ -408,7 +422,6 @@
               perform introduzir-c
            end-if.
            display "-----------------".
-
        introduzir-p.
            add 1 to indice_produtos.
            move indice_produtos to id-produto(indice_produtos).
@@ -445,7 +458,6 @@
               perform introduzir-p
            end-if.
            display "-----------------".
-
        introduzir-f.
            add 1 to indice_faturas.
            move indice_faturas to id-fatura(indice_faturas)
@@ -456,36 +468,24 @@
            perform until (dia-fatura(indice_faturas) > 0 and 
            dia-fatura(indice_faturas) < 32)
               display "Introduziste um dia invalido"
-              display "Envia 0 para cancelar"
               display "Qual e o dia da fatura?: "
               accept dia-fatura(indice_faturas)
-              if dia-fatura(indice_faturas) equal to 0
-                compute indice_faturas = indice_faturas - 1
-                perform menu
            end-perform.
            display "Escreva o mes da fatura: ".
            accept mes-fatura(indice_faturas).
            perform until (mes-fatura(indice_faturas) > 0 and 
            mes-fatura(indice_faturas) < 13)
               display "O mes que introduziste nao existe."
-              display "Envia 0 para cancelar."
               display "Qual e o mes da fatura?: "
               accept mes-fatura(indice_faturas)
-              if mes-fatura(indice_faturas) equal to 0
-                compute indice_faturas = indice_faturas - 1
-                perform menu
            END-PERFORM.
            display "Escreva o ano da fatura: ".
            accept ano-fatura(indice_faturas).
            perform until (ano-fatura(indice_faturas) > 2009 and 
            ano-fatura(indice_faturas) < 2031)
               display "O ano que introduziste nao existe."
-              display "Envia 0 para cancelar."
               display "Qual e o ano da fatura?: "
               accept ano-fatura(indice_faturas)
-              if ano-fatura(indice_faturas) equal to 0
-                compute indice_faturas = indice_faturas - 1
-                perform menu
            END-PERFORM.
            display "Qual e o id do cliente?: ".
            accept id-cliente-fatura(indice_faturas)
@@ -493,24 +493,16 @@
            indice_cliente and descricao-cliente(id-cliente-fatura
            (indice_faturas)) not equal to 'apagado')
               display "Este cliente nao existe."
-              display "Envia 0 para cancelar."
               display "Qual e o id do cliente da fatura?: "
               accept id-cliente-fatura(indice_faturas)
-              if id-cliente-fatura(indice_faturas) equal to 0
-                compute indice_faturas = indice_faturas - 1
-                perform menu
            end-perform.
            display "Quantos produtos a fatura tem: ".
            accept quant_produtos.
            perform until (quant_produtos >= 1 and quant_produtos <= 5)
               display "Erro - Quantidade de produtos invalida(1-5)."
-              display "Envia 0 para cancelar a introducao da fatura."
               display "Volta a introduzir a quantidade de produtos que"
     -        " a fatura vai ter: "
               accept quant_produtos
-              if quant_produtos equal to 0
-                compute indice_faturas = indice_faturas - 1
-                perform menu
            end-perform.
            move quant_produtos to n-produtos-fatura(indice_faturas).
            perform varying x from 1 by 1 until x > quant_produtos
@@ -520,12 +512,8 @@
                 indice_produtos and descricao-produto(id-produtos-fatura
                  (indice_faturas,x)) not equal to 'apagado')
                  display "Esse produto nao existe ou foi apagado."
-                 display "Para cancelar envia 0."
                  display "Qual e o id do produto?: "
                  accept id-produtos-fatura(indice_faturas,x)
-                 if id-produtos-fatura(indice_faturas,x) equal to 0
-                    compute indice_faturas = indice_faturas - 1
-                    perform menu
               end-perform
               display "Qual e a quantidade do produto: "
               accept quantidade-produto-fatura(indice_faturas,x)
@@ -534,14 +522,9 @@
                             (indice_faturas,x)) >=
                             quantidade-produto-fatura(indice_faturas,x))
                  display "Erro - Quantidade de produtos invalida."
-                 display "Envia 0 para cancelar a introducao da fatura."
                  display "Volta a introduzir a quantidade de produtos "
                  "que a fatura vai ter: "
                  accept quantidade-produto-fatura(indice_faturas,x)
-                 if quantidade-produto-fatura(indice_faturas,x)
-                    equal to 0
-                    compute indice_faturas = indice_faturas - 1
-                    perform menu
               end-perform
               compute stock-produto(id-produtos-fatura
               (indice_faturas,x)) = stock-produto(id-produtos-fatura
@@ -562,7 +545,6 @@
            if sim then
               perform introduzir-f
            end-if.
-
        consultar-c.
            display "-----------------".
            display "Dados dos clientes: ".
@@ -576,7 +558,6 @@
                 display "Nif: " nif-cliente(indice)
                 display "-----------------"
            end-perform.
-
        consultar-p.
            display "-----------------".
            display "Dados dos produtos: ".
@@ -589,7 +570,6 @@
                 display "Stock do produto: " stock-produto(indice)
                 display "-----------------"
            end-perform.
-
        consultar-f.
            display "-----------------".
            display "Dados das faturas: ".
@@ -614,7 +594,6 @@
                 end-perform
                 display "-----------------"
            end-perform.
-
        alterar-c.
            display "-----------------".
            display "Qual e o id do cliente que quer alterar os dados?:".
@@ -638,7 +617,6 @@
            display "Insira o NIF do cliente: "
            accept nif-cliente(procurar).
            display "-----------------".
-
        alterar-p.
            display "-----------------".
            display "Qual e o id do produto que quer alterar os dados: ".
@@ -670,7 +648,6 @@
            display "Qual e o stock do produto?: ".
            accept stock-produto(procurar).
            display "-----------------".
-
        alterar-f.
            display "-----------------".
            display "Qual e o id da fatura que quer alterar os dados?:".
@@ -703,17 +680,13 @@
            indice_cliente or descricao-cliente(id-cliente-fatura
            (procurar)) not equal to 'apagado')
               display "Este cliente nao existe."
-              display "envia 0 para cancelar."
               display "Qual e o cliente da fatura?: "
               accept id-cliente-fatura(procurar)
-              if id-cliente-fatura(procurar) equal to 0
-                perform menu
            end-perform.
            display "Quantos produtos a fatura tem: ".
            accept quant_produtos.
            perform until (quant_produtos >= 1 and quant_produtos <= 5)
               display "Erro - Quantidade de produtos invalida(1-5)."
-              display "Envia 0 para cancelar a introducao da fatura."
               display "Volta a introduzir a quantidade de produtos que"
     -        " a fatura vai ter:"
               accept quant_produtos
@@ -728,11 +701,8 @@
                  indice_produtos or descricao-produto(id-produtos-fatura
                  (procurar,x)) not equal to 'apagado')
                  display "Esse produto nao existe ou foi apagado."
-                 display "Para cancelar envia 0."
                  display "Qual e o id do produto?: "
                  accept id-produtos-fatura(procurar,x)
-                 if id-produtos-fatura(procurar,x) equal to 0
-                    perform menu
               end-perform
               display "Qual e a quantidade do produto?: "
               accept quantidade-produto-fatura(procurar,x)
@@ -741,13 +711,9 @@
                             (procurar,x)) >=
                             quantidade-produto-fatura(procurar,x))
                  display "Erro - Quantidade de produtos invalida."
-                 display "Envia 0 para cancelar a introducao da fatura."
                  display "Volta a introduzir a quantidade de produtos "
                  "que a fatura vai ter:"
                  accept quantidade-produto-fatura(procurar,x)
-                 if quantidade-produto-fatura(procurar,x)
-                    equal to 0
-                    perform menu
               end-perform
               compute stock-produto(id-produtos-fatura
               (procurar,x)) = stock-produto(id-produtos-fatura
@@ -755,7 +721,6 @@
               (procurar,x)
            end-perform.
            display "-----------------".
-
        eliminar-c.
            display "-----------------".
            display "Qual e o id do cliente que quer apagar?: ".
@@ -774,7 +739,6 @@
            move "apagado" to descricao-cliente(procurar).
            display "Cliente apagado com sucesso."
            display "-----------------".
-
        eliminar-p.
            display "-----------------".
            display "Qual e o id do produto que quer apagar os dados?:".
@@ -793,7 +757,6 @@
            move "apagado" to descricao-produto(procurar).
            display "Produto apagado com sucesso."
            display "-----------------".
-
        eliminar-f.
            display "-----------------".
            display "Qual e o id da fatura que quer apagar?:".
@@ -817,7 +780,6 @@
            move "apagado" to descricao-fatura(procurar)
            display "Fatura apagada com sucesso."
            display "-----------------".
-
        consultarapagados-c.
            display "-----------------".
            display "Dados dos clientes apagados: ".
@@ -832,7 +794,6 @@
                 display "-----------------"
            end-perform.
            display "-----------------".
-
        consultarapagados-p.
            display "-----------------".
            display "Dados dos produtos apagados: ".
@@ -846,7 +807,6 @@
                 display "-----------------"
            end-perform.
            display "-----------------".
-
        consultarapagados-f.
            display "-----------------".
            display "Dados das faturas apagadas: ".
@@ -872,7 +832,6 @@
                 display "-----------------"
            end-perform.
            display "-----------------".
-
        salvar-dados.
            if indice_cliente > 0 and indice_faturas > 0 and 
               indice_produtos > 0
@@ -905,22 +864,36 @@
               "das tabelas estao vazias."
               display "-----------------"
            end-if.
-
-       ler-dados.    
-           display "Carregando os clientes...".
-           perform ler-clientes.
-           display "Clientes carregados com sucesso.".
-           display "Carregando os produtos...".
-           perform ler-produtos.
-           display "Produtos carregados com sucesso.".
-           display "Carregando a primeira parte das faturas...".
-           perform ler-faturas.
-           display "Carregando a segunda parte das faturas...".
-           perform ler-produtos-faturas.
-           display "Faturas carregadas com sucesso.".
-           display "Todos os dados foram carregados com sucesso.".
-           display "-----------------".
-
+       ler-dados.
+           if indice_cliente < 1 and indice_faturas < 1 and 
+              indice_produtos < 1
+               display "Ao realizar esta opcao, os dados contidos das "
+               "tabelas serao apagados. Queres mesmo realizar esta "
+               "opcao?(S/N): "
+               accept opcao_continuar
+               perform until (opcao_continuar = "S" or
+                              opcao_continuar = "s" or
+                              opcao_continuar = "N" or
+                              opcao_continuar = "n" )
+                  display "ERRO - opcao errada."
+                  display "Volta introduzir a opcao."
+                  accept opcao_continuar
+               end-perform.
+               if sim then    
+                  display "Carregando os clientes...".
+                  perform ler-clientes.
+                  display "Clientes carregados com sucesso.".
+                  display "Carregando os produtos...".
+                  perform ler-produtos.
+                  display "Produtos carregados com sucesso.".
+                  display "Carregando a primeira parte das faturas...".
+                  perform ler-faturas.
+                  display "Carregando a segunda parte das faturas...".
+                  perform ler-produtos-faturas.
+                  display "Faturas carregadas com sucesso.".
+                  display "Todos os dados foram carregados com "
+                  "sucesso.".
+                  display "-----------------".
        salvar-cliente.
            open output arquivo-cliente.
            perform varying indice from 1 by 1 until indice >
@@ -936,7 +909,6 @@
                 write registo-cliente
            end-perform.
            close arquivo-cliente.
-
        salvar-produto.
            open output arquivo-produto.
            perform varying indice from 1 by 1 until indice >
@@ -950,7 +922,6 @@
                 write registo-produto
            end-perform.
            close arquivo-produto.
-
        salvar-fatura.
            open output arquivo-fatura.
            perform varying indice from 1 by 1 until indice >
@@ -980,8 +951,8 @@
                 write registo-fatura
            end-perform.
            close arquivo-fatura.
-
        ler-clientes.
+           move 0 to indice_cliente.
            open input arquivo-cliente.
            move "n" to final-arquivo.
            move 0 to y.
@@ -989,14 +960,11 @@
            perform exiba-cliente
                until final-arquivo = "s".
            close arquivo-cliente.
-
        leia-proximo-cliente.
            read arquivo-cliente record at end move "s" to final-arquivo.
-
        exiba-cliente.
            perform guardar-cliente.
            perform leia-proximo-cliente.
-
        guardar-cliente.
            add 1 to y.
            move y to indice_cliente.
@@ -1006,8 +974,8 @@
            move registo-cliente-telefone to telefone-cliente(y).
            move registo-cliente-nif to nif-cliente(y).
            move registo-cliente-descricao to descricao-cliente(y).
-
        ler-produtos.
+           move 0 to indice_produtos.
            open input arquivo-produto.
            move "n" to final-arquivo.
            move 0 to y.
@@ -1015,14 +983,11 @@
            perform exiba-produto
                until final-arquivo = "s".
            close arquivo-produto.
-
        leia-proximo-produto.
            read arquivo-produto record at end move "s" to final-arquivo.
-
        exiba-produto.
            perform guardar-produto.
            perform leia-proximo-produto.
-
        guardar-produto.
            add 1 to y.
            move y to indice_produtos.
@@ -1031,8 +996,8 @@
            move registo-produto-tipo to tipo-produto(y).
            move registo-produto-stock to stock-produto(y).
            move registo-produto-descricao to descricao-produto(y).
-
        ler-faturas.
+           move 0 to indice_faturas.
            open input arquivo-fatura.
            move "n" to final-arquivo.
            move 0 to y.
@@ -1040,14 +1005,11 @@
            perform exiba-fatura
                until final-arquivo = "s".
            close arquivo-fatura.
-
        leia-proxima-fatura.
            read arquivo-fatura record at end move "s" to final-arquivo.
-
        exiba-fatura.
            perform guardar-fatura.
            perform leia-proxima-fatura.
-
        guardar-fatura.
            add 1 to y.
            move y to indice_faturas.
@@ -1058,7 +1020,6 @@
            move registo-fatura-id-cliente to id-cliente-fatura(y).
            move registo-fatura-n-produtos to n-produtos-fatura(y).
            move registo-fatura-descricao to descricao-fatura(y).
-
        ler-produtos-faturas.
            open input arquivo-produto-fatura. 
            move "n" to final-arquivo.
@@ -1067,15 +1028,12 @@
            perform exiba-produto-fatura
                until final-arquivo = "s".
            close arquivo-produto-fatura.
-
        leia-proximo-produto-fatura.
            read arquivo-produto-fatura record at end move "s" to 
            final-arquivo.
-
        exiba-produto-fatura.
            perform guardar-produto-fatura.
            perform leia-proximo-produto-fatura.
-
        guardar-produto-fatura.
            move registo-produto-fatura-id to y.
            move registo-produto-fatura-id-id to z.
@@ -1083,5 +1041,4 @@
            id-produtos-fatura(y,z).
            move registo-produto-fatura-qt-prod to
            quantidade-produto-fatura(y,z).
-
        END PROGRAM trabalho-gestao.
