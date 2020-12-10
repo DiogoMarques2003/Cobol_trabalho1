@@ -601,12 +601,8 @@
            perform until (procurar <= indice_cliente and
                 descricao-cliente(procurar) not equal to "apagado")
               display "Erro - esse cliente nao existe ou foi apagado."
-              display "Se quiseres cancelar escreve 0."
               display "Volta a introduzir outro id de cliente: "
               accept procurar
-              if procurar equal to 0
-                 perform menu
-              end-if
            END-PERFORM.
            display "Insira o nome do cliente: "
            accept nome-cliente(procurar)
@@ -624,12 +620,8 @@
            perform until (procurar <= indice_produtos and
                 descricao-produto(procurar) not equal to "apagado")
               display "Erro - esse produto nao existe ou foi apagado."
-              display "Se quiseres cancelar escreve 0."
               display "Volta a introduzir outro id de produto: "
               accept procurar
-              if procurar equal to 0
-                 perform menu
-              end-if
            END-PERFORM.
            display "Escreva o nome do produto: ".
            accept nome-produto(procurar).
@@ -655,12 +647,8 @@
            perform until (procurar <= indice_faturas and
                 descricao-fatura(procurar) not equal to "apagado")
               display "Erro - essa fatura nao existe ou foi apagado."
-              display "Se quiseres cancelar escreve 0."
               display "Volta a introduzir outro id da fatura: "
               accept procurar
-              if procurar equal to 0
-                 perform menu
-              end-if
            END-PERFORM.
            perform varying y from 1 by 1 until y >
                 n-produtos-fatura(indice)
@@ -669,11 +657,29 @@
                 quantidade-produto-fatura(indice,y)
            end-perform.
            display "Escreva o dia da fatura: ".
-           accept dia-fatura(procurar).
+           accept dia-fatura(indice_faturas).
+           perform until (dia-fatura(indice_faturas) > 0 and 
+           dia-fatura(indice_faturas) < 32)
+              display "Introduziste um dia invalido"
+              display "Qual e o dia da fatura?: "
+              accept dia-fatura(indice_faturas)
+           end-perform.
            display "Escreva o mes da fatura: ".
-           accept mes-fatura(procurar).
+           accept mes-fatura(indice_faturas).
+           perform until (mes-fatura(indice_faturas) > 0 and 
+           mes-fatura(indice_faturas) < 13)
+              display "O mes que introduziste nao existe."
+              display "Qual e o mes da fatura?: "
+              accept mes-fatura(indice_faturas)
+           END-PERFORM.
            display "Escreva o ano da fatura: ".
-           accept ano-fatura(procurar).
+           accept ano-fatura(indice_faturas).
+           perform until (ano-fatura(indice_faturas) > 2009 and 
+           ano-fatura(indice_faturas) < 2031)
+              display "O ano que introduziste nao existe."
+              display "Qual e o ano da fatura?: "
+              accept ano-fatura(indice_faturas)
+           END-PERFORM.
            display "Qual e o id do cliente?: ".
            accept id-cliente-fatura(procurar)
            perform until (id-cliente-fatura(procurar) <
@@ -690,8 +696,6 @@
               display "Volta a introduzir a quantidade de produtos que"
     -        " a fatura vai ter:"
               accept quant_produtos
-              if quant_produtos equal to 0
-                perform menu
            end-perform.
            move quant_produtos to n-produtos-fatura(procurar).
            perform varying x from 1 by 1 until x > quant_produtos
@@ -729,12 +733,8 @@
                 descricao-cliente(procurar) not equal to "apagado")
               display "Erro - esse cliente nao existe ou ja foi "
               "apagado."
-              display "Se quiseres cancelar escreve 0."
               display "Volta a introduzir outro id de cliente."
               accept procurar
-              if procurar equal to 0
-                 perform menu
-              end-if
            END-PERFORM.
            move "apagado" to descricao-cliente(procurar).
            display "Cliente apagado com sucesso."
@@ -747,12 +747,8 @@
                 descricao-produto(procurar) not equal to "apagado")
               display "Erro - esse produto nao existe ou ja foi "
               "apagado."
-              display "Se quiseres cancelar escreve 0."
               display "Volta a introduzir outro id do produto."
               accept procurar
-              if procurar equal to 0
-                 perform menu
-              end-if
            END-PERFORM.
            move "apagado" to descricao-produto(procurar).
            display "Produto apagado com sucesso."
@@ -764,12 +760,8 @@
            perform until (procurar <= indice_faturas and
                 descricao-fatura(procurar) not equal to "apagado")
               display "Erro - essa fatura nao existe ou ja foi apagado."
-              display "Se quiseres cancelar escreve 0."
               display "Volta a introduzir outro id da fatura."
               accept procurar
-              if procurar equal to 0
-                 perform menu
-              end-if
            END-PERFORM.
            perform varying y from 1 by 1 until y >
                 n-produtos-fatura(indice)

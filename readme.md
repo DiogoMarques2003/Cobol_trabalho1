@@ -1,5 +1,11 @@
-# Trabalho de cobol 
-- trabalho para gerir 3 tabelas de dados e salvar nos ficheiros os mesmos dados.
+# Cobol
 
-# Coisas que faltam a fazer
-- colocar a opção 0 para sair do codigo a funcionar
+## :rocket: Tecnologias
+
+Esse projeto foi desenvolvido com as seguintes tecnologias:
+
+- [Cobol](https://gnucobol.sourceforge.io/guides/OpenCOBOL%20Programmers%20Guide.pdf)
+
+## 💻 Projeto
+
+Este foi um projeto desenvolvido na escola cujo o objetivo era gerir três tabelas e salvar os dadosda mesma nas tabelas
