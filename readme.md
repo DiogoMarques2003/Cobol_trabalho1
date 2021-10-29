@@ -8,4 +8,4 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-Este foi um projeto desenvolvido na escola cujo o objetivo era gerir três tabelas e salvar os dadosda mesma nas tabelas
+Este foi um projeto desenvolvido na escola cujo o objetivo era gerir três tabelas e salvar os dados das mesmas nas tabelas
